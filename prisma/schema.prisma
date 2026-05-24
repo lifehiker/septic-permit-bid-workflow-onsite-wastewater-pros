@@ -1,0 +1,235 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStage {
+  NEW_INQUIRY
+  SITE_VISIT_SCHEDULED
+  SOIL_TEST_PENDING
+  DESIGN_DRAWINGS_NEEDED
+  PERMIT_PACKET_INCOMPLETE
+  SUBMITTED_TO_COUNTY
+  COUNTY_REVISIONS_REQUESTED
+  PERMIT_APPROVED
+  INSTALL_SCHEDULED
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum JobType {
+  NEW_INSTALL
+  REPLACEMENT
+  REPAIR
+  DESIGN_ONLY
+  INSPECTION_SUPPORT
+}
+
+enum SoilTestStatus {
+  NOT_REQUIRED
+  NEEDS_SCHEDULING
+  SCHEDULED
+  COMPLETED
+  REPORT_RECEIVED
+}
+
+enum ChecklistStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETE
+  NOT_APPLICABLE
+}
+
+enum DocumentType {
+  SOIL_REPORT
+  SITE_PLAN
+  DESIGN_DRAWING
+  APPLICATION_FORM
+  PROPOSAL
+  OTHER
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String       @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  accounts      Account[]
+  sessions      Session[]
+  memberships   Membership[]
+  assignedJobs  Job[]        @relation("AssignedJobs")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Organization {
+  id              String           @id @default(cuid())
+  name            String
+  trialEndsAt     DateTime
+  stripeCustomerId String?
+  memberships     Membership[]
+  jobs            Job[]
+  countyTemplates CountyTemplate[]
+  subscriptions   Subscription[]
+  activityLogs    ActivityLog[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model Membership {
+  id             String         @id @default(cuid())
+  userId         String
+  organizationId String
+  role           MembershipRole @default(MEMBER)
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime       @default(now())
+
+  @@unique([userId, organizationId])
+}
+
+model Job {
+  id                    String                @id @default(cuid())
+  organizationId        String
+  homeownerName         String
+  propertyAddress       String
+  phone                 String?
+  email                 String?
+  county                String
+  jobType               JobType
+  estimatedValue        Int?
+  stage                 JobStage              @default(NEW_INQUIRY)
+  soilTestStatus        SoilTestStatus        @default(NEEDS_SCHEDULING)
+  soilTestScheduledDate DateTime?
+  soilTestProvider      String?
+  soilTestSummary       String?
+  nextFollowUpDate      DateTime?
+  assignedUserId        String?
+  notes                 String?
+  organization          Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  assignedUser          User?                 @relation("AssignedJobs", fields: [assignedUserId], references: [id], onDelete: SetNull)
+  checklistItems        PermitChecklistItem[]
+  documents             JobDocument[]
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+}
+
+model PermitChecklistItem {
+  id        String          @id @default(cuid())
+  jobId     String
+  title     String
+  section   String          @default("Permit packet")
+  status    ChecklistStatus @default(NOT_STARTED)
+  notes     String?
+  position  Int             @default(0)
+  job       Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model CountyTemplate {
+  id             String               @id @default(cuid())
+  organizationId String
+  county         String
+  description    String?
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  items          CountyTemplateItem[]
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+}
+
+model CountyTemplateItem {
+  id         String         @id @default(cuid())
+  templateId String
+  title      String
+  section    String         @default("County requirements")
+  position   Int            @default(0)
+  template   CountyTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+}
+
+model JobDocument {
+  id        String       @id @default(cuid())
+  jobId     String
+  name      String
+  url       String
+  type      DocumentType @default(OTHER)
+  job       Job          @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt DateTime     @default(now())
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  organizationId       String
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+  tier                 String             @default("Solo")
+  status               SubscriptionStatus @default(TRIALING)
+  currentPeriodEnd     DateTime?
+  organization         Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+model ActivityLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String?
+  action         String
+  subject        String
+  metadata       String?
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+}

@@ -1,0 +1,92 @@
+import type { SeoPageData } from "@/components/seo-page";
+
+const baseChecklist = [
+  "Capture homeowner, property, county, contact, and job value details.",
+  "Confirm soil/perc test requirement, provider, scheduled date, and report status.",
+  "Track application form, site plan, drawings, fee receipt, license info, and supplemental county forms.",
+  "Flag missing packet items before submission to the county.",
+  "Set follow-up dates after the estimate, after permit submission, and after county revision requests.",
+];
+
+export const seoPages: Record<string, SeoPageData> = {
+  "septic-permit-checklist": {
+    keyword: "septic permit checklist",
+    title: "Septic Permit Checklist for Installers and Designers",
+    description: "A practical checklist for moving septic jobs from first call through perc test, county requirements, packet prep, and permit approval.",
+    cta: "Track this checklist across every job",
+    checklist: baseChecklist,
+    sections: ["What to collect before the site visit", "What belongs in the packet", "How to prevent county revision delays"],
+  },
+  "septic-permit-tracking-software": {
+    keyword: "septic permit tracking software",
+    title: "Septic Permit Tracking Software for Onsite Wastewater Pros",
+    description: "Track estimates, soil tests, county checklists, packet status, revisions, and permit approvals in a septic-specific pipeline.",
+    cta: "Start tracking permits, soil tests, and packet status",
+    checklist: baseChecklist,
+    sections: ["Pipeline stages septic teams actually use", "County packet visibility", "Follow-ups that protect revenue"],
+  },
+  "septic-installer-crm": {
+    keyword: "septic installer crm",
+    title: "Septic Installer CRM Built Around Permits, Perc Tests, and Bids",
+    description: "Manage septic leads and bids without forcing a generic CRM to understand perc tests, county packets, and installer workflows.",
+    cta: "Try the septic-specific pipeline",
+    checklist: baseChecklist,
+    sections: ["Lead to approved permit", "Bid follow-up rhythm", "Why septic teams need different fields"],
+  },
+  "onsite-wastewater-contractor-software": {
+    keyword: "onsite wastewater contractor software",
+    title: "Onsite Wastewater Contractor Software for Bids and Permits",
+    description: "A lightweight web SaaS for onsite wastewater contractors who need pre-install sales, permitting, and packet organization.",
+    cta: "Manage estimates through permit approval",
+    checklist: baseChecklist,
+    sections: ["Small-team workflow", "Designer and installer handoffs", "Multi-county visibility"],
+  },
+  "septic-installation-estimate-follow-up": {
+    keyword: "septic installation estimate follow up",
+    title: "Septic Installation Estimate Follow-Up Template",
+    description: "Use a simple 3/7/14-day follow-up rhythm so high-value septic proposals do not disappear in email, texts, or voicemail.",
+    cta: "Use automated follow-up reminders",
+    checklist: ["Send a same-day recap after the site visit.", "Follow up after 3 days with missing information and next steps.", "Follow up after 7 days with permit timeline context.", "Follow up after 14 days before closing the opportunity.", "Keep each touch tied to job stage and packet status."],
+    sections: ["Follow-up email outline", "When to call instead of email", "How reminders connect to permit work"],
+  },
+  "septic-proposal-template": {
+    keyword: "septic proposal template",
+    title: "Septic Proposal Template for Installers",
+    description: "Structure septic proposals around scope, permitting assumptions, soil-test dependencies, exclusions, and homeowner next steps.",
+    cta: "Generate branded proposal follow-ups",
+    checklist: ["List system type and scope.", "State permit and soil-test assumptions.", "Note county revision dependencies.", "Attach or link drawings and site plan.", "Set acceptance and follow-up dates."],
+    sections: ["Proposal sections", "Permit assumptions", "Follow-up checklist"],
+  },
+  "perc-test-checklist": {
+    keyword: "perc test checklist",
+    title: "Perc Test Checklist for Septic Permit Workflows",
+    description: "Coordinate perc-test scheduling, providers, result summaries, document links, and packet readiness on each septic job.",
+    cta: "Track perc test status per job",
+    checklist: ["Confirm if perc/soil test is required.", "Schedule provider and date.", "Record site access instructions.", "Attach report link.", "Update permit packet status after report receipt."],
+    sections: ["Scheduling details", "Result summary fields", "Packet dependencies"],
+  },
+  "septic-system-design-forms": {
+    keyword: "septic system design forms",
+    title: "Septic System Design Forms and Packet Checklist",
+    description: "Organize system design drawings, site plans, application forms, and supplemental county forms into packet-ready status.",
+    cta: "Organize forms into permit-ready packets",
+    checklist: baseChecklist,
+    sections: ["Design document checklist", "County supplement tracking", "Designer handoff notes"],
+  },
+  "county-septic-permit-requirements-template": {
+    keyword: "county septic permit requirements",
+    title: "County Septic Permit Requirements Template",
+    description: "Build reusable county-specific checklist templates for the forms, drawings, reports, fees, and supplemental requirements that repeat.",
+    cta: "Build reusable county requirement checklists",
+    checklist: ["County application form.", "County fee receipt.", "County supplemental design worksheet.", "Local installer or designer license copy.", "Revision response requirements."],
+    sections: ["Template structure", "Applying templates to jobs", "Avoiding missed local requirements"],
+  },
+  "septic-permit-packet": {
+    keyword: "septic permit packet",
+    title: "How to Prepare a Septic Permit Packet",
+    description: "Prepare a septic permit packet summary with homeowner info, address, county, soil-test status, missing items, documents, and notes.",
+    cta: "Generate a permit packet from job records",
+    checklist: baseChecklist,
+    sections: ["Packet summary fields", "Missing item review", "Print-to-PDF export"],
+  },
+};
