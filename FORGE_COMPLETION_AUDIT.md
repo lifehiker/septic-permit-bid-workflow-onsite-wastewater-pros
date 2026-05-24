@@ -43,15 +43,18 @@
 ## Deployment
 - Standalone Next output configured in `next.config.ts`.
 - Production Dockerfile uses `node:20-slim`, Prisma Debian binary target, SQLite `/data/app.db`, and startup `prisma db push`: `Dockerfile`.
-- Docker build was attempted, but the local Docker daemon socket is not accessible from this environment.
+- 2026-05-24 deployment repair: removed the nonexistent `public/` directory copy from `Dockerfile`, so the image no longer references a path outside this repository structure.
+- Docker build was attempted on 2026-05-24, but the local Docker daemon socket is not accessible from this environment.
 
 ## Verification
-- `npx prisma db push`: passed.
-- `npm run db:seed`: passed.
-- `npm run lint`: passed via `tsc --noEmit`.
-- `npm run build`: passed.
-- Dev server: started successfully on `http://localhost:3000`.
-- Smoke-tested unauthenticated public routes: `/`, `/pricing`, `/septic-permit-tracking-software` returned 200.
+- `npx prisma db push`: passed on 2026-05-24.
+- `npm run db:seed`: passed on 2026-05-24.
+- `npm run lint`: passed via `tsc --noEmit` on 2026-05-24.
+- `npm run build`: passed on 2026-05-24.
+- Dev server: started successfully on `http://localhost:3001` because port 3000 was already occupied.
+- Smoke-tested unauthenticated public routes: `/`, `/pricing`, `/signup`, `/septic-permit-tracking-software` returned 200.
 - Smoke-tested auth redirect: `/dashboard` redirects to `/login` when unauthenticated.
 - Smoke-tested authenticated routes with seeded demo credentials: `/dashboard`, `/jobs`, `/jobs/[id]`, `/jobs/[id]/packet`, `/county-templates`, `/settings/billing` returned 200.
 - Smoke-tested email fallback endpoint: `/api/cron/follow-up-reminders` returned a safe skipped response without Resend credentials.
+- Smoke-tested Stripe fallback: `/api/stripe/checkout` redirects to billing with a setup notice without Stripe credentials.
+- Captured visual smoke screenshots for `/`, `/pricing`, and `/septic-permit-tracking-software` using Playwright CLI.

@@ -81,14 +81,16 @@ Implementation order: foundation -> data/auth -> core workflows -> secondary wor
 - [x] Add production-ready Dockerfile only after checking project structure.
 - [x] Ensure Dockerfile supports Prisma SQLite and standalone Next output.
 - [x] Ensure app runs without configured environment variables.
-- [x] Test `docker build .` if Docker is available. Docker CLI exists, but daemon access is denied in this environment.
+- [x] Re-check Dockerfile for deployment failure patterns during 2026-05-24 repair pass.
+- [x] Remove `COPY /app/public` because this project does not include a `public/` directory.
+- [x] Test `docker build .` if Docker is available. Docker CLI exists, but daemon socket access is denied in this environment.
 
 ## Verification
 - [x] Run Prisma generate/db push.
 - [x] Run `npm run lint`.
 - [x] Run `npm run build` and fix all errors.
-- [x] Start dev server and verify it does not crash.
-- [x] Smoke-test public routes.
-- [x] Smoke-test authenticated primary app routes using local credentials.
-- [x] Visually review pages/components for professional, non-template UI.
+- [x] Start dev server and verify it does not crash for the 2026-05-24 repair pass.
+- [x] Smoke-test public routes for the 2026-05-24 repair pass.
+- [x] Smoke-test authenticated primary app routes using local credentials for the 2026-05-24 repair pass.
+- [x] Visually review pages/components for professional, non-template UI for the 2026-05-24 repair pass.
 - [x] Create `FORGE_COMPLETION_AUDIT.md` mapping requirements to files/routes/actions.

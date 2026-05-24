@@ -5,7 +5,7 @@
 - **App Name:** septic-permit-bid-workflow-onsite-wastewater-pros
 - **Repository:** septic-permit-bid-workflow-onsite-wastewater-pros
 - **Tech Stack:** Next.js 15 (App Router) + TypeScript + Tailwind + shadcn/ui
-- **Description:** A workflow app for septic installers, designers, and onsite wastewater professionals to manage site visits, soil-test status, county permit requirements, proposal follow-ups, and permit-ready packet preparation. It combines lightweight CRM tracking with septic-specific permitting checklists and documentation workflows.
+- **Description:** septic-permit-bid-workflow-onsite-wastewater-pros
 
 ---
 
